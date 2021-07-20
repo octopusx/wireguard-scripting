@@ -1,12 +1,12 @@
 #! /bin/bash
 
 # Set adequate firewall rules
-sudo ufw allow 22/tcp
-sudo ufw allow 51820/udp
-sudo ufw enable
+ufw allow 22/tcp
+ufw allow 51820/udp
+ufw enable
 
 # Installs and configures wireguard
-apt update && apt install wireguard
+apt update && apt install -y wireguard
 umask 077
 wg genkey | tee privatekey | wg pubkey > publickey
 
@@ -23,11 +23,10 @@ PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o $(echo $main_iface) -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o $(echo $main_iface) -j MASQUERADE\n
 SaveConfig = true\n
 "
-echo -e $wg0 >> /etc/wireguard/wg0.conf
+echo -e $wg0 > /etc/wireguard/wg0.conf
 
 # Ensures ipv4 forwarding is permanently enabled
-# We need to SED the following in /etc/sysctl.conf
-# net.ipv4.ip_forward = 1
+sed -i.bkp 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
 
 # Enables the service so that it starts on boot
 systemctl enable wg-quick@wg0
