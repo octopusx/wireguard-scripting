@@ -1,7 +1,12 @@
 #! /bin/bash
 
-# TODO: 
-# Write a script that:
+usage(){
+    echo "Configure your WireGuard tunnel endpoints"
+    echo "\$1 host: server or client, default: client"
+    echo "\$2 main interface name, default: eth0"
+    echo "\$3 vpn ip range, default: 10.0.0.1/24"
+}
+
 # Installs and configures wireguard
 apt update && apt install -y wireguard
 umask 077

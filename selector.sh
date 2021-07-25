@@ -2,9 +2,9 @@
 
 usage(){
     echo "Configure your WireGuard tunnel endpoints"
-    echo "TODO"
-    echo "TODO"
-    echo "TODO"
+    echo "\$1 host: server or client, default: client"
+    echo "\$2 main interface name, default: eth0"
+    echo "\$3 vpn ip range, default: 10.0.0.1/24"
 }
 
 select_interface(){
@@ -20,8 +20,15 @@ select_interface(){
     selected=$(echo $all_interfaces | cut -d" " -f$(echo $number))
 }
 
-select_interface
-echo "selected $selected"
+select_ip_range(){
+    echo "Enter the IP range for your VPN:"
+    read ip_range
+}
+
+# select_interface
+# echo "selected $selected"
+
+usage
 
 # TODO:
 # configure $ip_range
